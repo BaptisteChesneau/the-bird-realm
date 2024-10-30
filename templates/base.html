@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site d'information sur les oiseaux</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Bienvenue sur le site d'information sur les oiseaux</h1>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    {% set social_links = [
+        {"name": "Instagram", "url": "https://www.instagram.com/the_bird_realm", "icon": "instagram-icon.png"},
+        {"name": "LinkedIn", "url": "https://www.linkedin.com/in/the_bird_realm", "icon": "linkedin-icon.png"},
+        {"name": "TikTok", "url": "https://www.tiktok.com/@the_bird_realm", "icon": "tiktok-icon.png"}
+    ] %}
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section left">
+                <h4>Réseaux Sociaux</h4>
+                <div class="social-icons">
+                    <!-- Ajout de l'icône Instagram directement -->
+                    <a href="https://www.instagram.com/the_bird_realm" target="_blank">
+                        <img src="{{ url_for('static', filename='images/instagram-icon.png') }}" alt="Instagram">
+                    </a>
+                    <!-- Icônes LinkedIn et TikTok ajoutées directement -->
+                    <a href="https://www.linkedin.com/in/the_bird_realm" target="_blank">
+                        <img src="{{ url_for('static', filename='images/linkedin-icon.png') }}" alt="LinkedIn">
+                    </a>
+                    <a href="https://www.tiktok.com/@the_bird_realm" target="_blank">
+                        <img src="{{ url_for('static', filename='images/tiktok-icon.png') }}" alt="TikTok">
+                    </a>
+                    <!-- Boucle pour afficher les icônes via social_links -->
+                    {% for social in social_links %}
+                        <a href="{{ social.url }}" target="_blank">
+                            <img src="{{ url_for('static', filename='images/' + social.icon) }}" alt="{{ social.name }}">
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="footer-section center" style="text-align: center;">
+                <h4>Mentions Légales</h4>
+                <a href="{{ url_for('legal') }}">Voir les mentions légales</a>
+                <p>Statut de conservation IUCN : Préoccupation mineure (LC)</p>
+            </div>
+            <div class="footer-section right" style="text-align: center;">
+                <h4>Coordonnées</h4>
+                <p>123 Rue des Oiseaux, 75000 Paris</p>
+                <p>Email: contact@oiseausite.fr</p>
+                <p>Téléphone: +33 1 23 45 67 89</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
