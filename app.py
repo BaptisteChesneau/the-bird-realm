@@ -14,5 +14,10 @@ def appointment():
 def legal():
     return render_template('legal.html')
 
+@app.route('/formulaire_tally')
+def formulaire_tally():
+    return render_template('formulaire_tally.html')
+
+
 if __name__ == "__main__":
     app.run(debug=True)
