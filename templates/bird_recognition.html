@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Barre de navigation -->
+<nav class="navigation-bar">
+    <a href="{{ url_for('home') }}" class="nav-button">Accueil</a>
+</nav>
+
+<main class="bird-recognition">
+    <h2>Reconnaissance des Oiseaux</h2>
+    <p>Envoyez une photo d'un oiseau pour l'identifier et entendre son chant.</p>
+    
+    <form action="{{ url_for('bird_recognition') }}" method="post" enctype="multipart/form-data" class="bird-form">
+        <label for="file-upload" class="custom-file-upload">
+            Glissez et déposez votre image ici
+        </label>
+        <input type="file" id="file-upload" name="file" accept="image/*" required>
+        <button type="submit" class="recognize-button">Démarrer la reconnaissance</button>
+    </form>
+    
+    {% if bird_name %}
+        <div id="results">
+            <h3>Résultat :</h3>
+            <p class="bird-name">Oiseau détecté : {{ bird_name }}</p>
+            <p class="scientific-name">Nom scientifique : {{ scientific_name }}</p>
+            <p class="location">Lieu de l'enregistrement : {{ location }}</p>
+            {% if song_url %}
+                <audio controls>
+                    <source src="{{ song_url }}" type="audio/mpeg">
+                    Votre navigateur ne supporte pas la lecture de l'audio.
+                </audio>
+            {% else %}
+                <p>Aucun enregistrement trouvé pour cet oiseau.</p>
+            {% endif %}
+        </div>
+    {% elif error %}
+        <div id="results">
+            <p class="error-message">{{ error }}</p>
+        </div>
+    {% endif %}
+</main>
+
+<!-- Footer de la page -->
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-section left">
+            <h4>Réseaux Sociaux</h4>
+            <div class="social-icons">
+                <a href="https://www.instagram.com/the_bird_realm" target="_blank">
+                    <img src="{{ url_for('static', filename='images/instagram-icon.png') }}" alt="Instagram">
+                </a>
+                <a href="https://www.linkedin.com/in/the_bird_realm" target="_blank">
+                    <img src="{{ url_for('static', filename='images/linkedin-icon.png') }}" alt="LinkedIn">
+                </a>
+                <a href="https://www.tiktok.com/@the_bird_realm" target="_blank">
+                    <img src="{{ url_for('static', filename='images/tiktok-icon.png') }}" alt="TikTok">
+                </a>
+            </div>
+        </div>
+        <div class="footer-section center">
+            <h4>Mentions Légales</h4>
+            <a href="{{ url_for('legal') }}">Voir les mentions légales</a>
+            <p>Statut de conservation IUCN : Préoccupation mineure (LC)</p>
+        </div>
+        <div class="footer-section right">
+            <h4>Coordonnées</h4>
+            <p>123 Rue des Oiseaux, 75000 Paris</p>
+            <p>Email: contact@oiseausite.fr</p>
+            <p>Téléphone: +33 1 23 45 67 89</p>
+        </div>
+    </div>
+</footer>
+
+<style>
+    /* Style pour la barre de navigation */
+    .navigation-bar {
+        background-color: #2c3e50;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .nav-button {
+        color: #fff;
+        text-decoration: none;
+        font-size: 18px;
+        padding: 8px 15px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+
+    .nav-button:hover {
+        background-color: #34495e;
+    }
+
+    .bird-recognition {
+        padding: 40px;
+        text-align: center;
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        margin: 80px auto;  /* Espacement pour centrer verticalement */
+        max-width: 600px;
+    }
+
+    .bird-recognition h2 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+    }
+
+    .bird-recognition p {
+        font-size: 18px;
+        color: #34495e;
+        margin-bottom: 30px;
+    }
+
+    .bird-form {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #file-upload {
+        display: none;
+    }
+
+    .custom-file-upload {
+        background-color: #34495e;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-bottom: 20px;
+        transition: background-color 0.3s;
+    }
+
+    .custom-file-upload:hover {
+        background-color: #2c3e50;
+    }
+
+    .recognize-button {
+        background-color: #2980b9;
+        color: #fff;
+        border: none;
+        padding: 12px 25px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .recognize-button:hover {
+        background-color: #1f6399;
+    }
+
+    #results {
+        margin-top: 30px;
+        font-size: 18px;
+        color: #2c3e50;
+    }
+
+    .bird-name {
+        font-weight: bold;
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .scientific-name {
+        font-style: italic;
+        margin-bottom: 10px;
+    }
+
+    .location {
+        font-size: 16px;
+        color: #34495e;
+        margin-bottom: 15px;
+    }
+
+    .error-message {
+        color: #e74c3c;
+        font-weight: bold;
+    }
+
+    audio {
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .site-footer {
+        background-color: #2c3e50;
+        color: #fff;
+        padding: 40px 20px;
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .footer-section {
+        margin-bottom: 20px;
+        flex: 1;
+        padding: 10px;
+    }
+
+    .social-icons a img {
+        width: 40px;
+        height: 40px;
+        margin: 0 10px;
+    }
+</style>
+{% endblock %}
